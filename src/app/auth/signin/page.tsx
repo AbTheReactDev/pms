@@ -14,14 +14,20 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signIn("credentials", { email, password });
-  };
+    const { ok, status } = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
 
-  useEffect(() => {
-    if (status === "authenticated") {
+    if (!ok) {
+      if (status === 401) {
+        alert("Invalid credentials or user not found");
+      }
+    } else {
       router.push("/");
     }
-  }, [status]);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

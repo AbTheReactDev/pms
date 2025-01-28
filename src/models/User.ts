@@ -28,8 +28,6 @@ const userSchema = new mongoose.Schema<UserDocument>({
     timestamps: true
 });
 
-// Add index for faster email lookups since we query by email often
-userSchema.index({ email: 1 });
 
 const User = mongoose.models.User || mongoose.model<UserDocument>('User', userSchema);
 
