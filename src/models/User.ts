@@ -4,6 +4,9 @@ interface UserDocument extends mongoose.Document {
     name: string;
     email: string;
     password: string;
+    gender: string;
+    contactNo: string;
+    profilePicture: string;
 }
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -23,7 +26,10 @@ const userSchema = new mongoose.Schema<UserDocument>({
     password: {
         type: String,
         required: true
-    }
+    },
+    gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
+    contactNo: { type: String, required: true },
+    profilePicture: { type: String },
 }, {
     timestamps: true
 });

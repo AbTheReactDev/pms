@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function Home() {
+export default function Profile() {
   const router = useRouter();
 
   const { status } = useSession();
@@ -14,10 +14,5 @@ export default function Home() {
       router.push("/auth/signin");
     }
   }, [status, router]);
-
-  return (
-    <section>
-      <h1>Home</h1>
-    </section>
-  );
+  return <h1>Profile</h1>;
 }

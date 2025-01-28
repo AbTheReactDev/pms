@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function SignUp() {
@@ -6,13 +7,10 @@ export default function SignUp() {
     name: "",
     email: "",
     password: "",
-    // gender: "Male",
-    // contactNo: "",
-    // profilePicture: "",
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -27,8 +25,8 @@ export default function SignUp() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   return (
@@ -68,7 +66,7 @@ export default function SignUp() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded"
+            className="w-full mt-1 p-2 text-black border rounded"
             required
           />
         </div>
@@ -85,68 +83,28 @@ export default function SignUp() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded"
+            className="w-full mt-1 p-2 text-black border rounded"
             required
           />
         </div>
-        {/* <div className="mb-4">
-          <label
-            htmlFor="gender"
-            className="block text-black text-sm font-medium"
-          >
-            Gender
-          </label>
-          <select
-            id="gender"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded text-black"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="contactNo"
-            className="block text-black text-sm font-medium"
-          >
-            Contact No
-          </label>
-          <input
-            type="text"
-            id="contactNo"
-            name="contactNo"
-            value={formData.contactNo}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="profilePicture"
-            className="block text-black text-sm font-medium"
-          >
-            Profile Picture URL
-          </label>
-          <input
-            type="text"
-            id="profilePicture"
-            name="profilePicture"
-            value={formData.profilePicture}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded"
-          />
-        </div> */}
+
         <button
           type="submit"
-          className="w-full bg-green-500 text-white p-2 rounded"
+          className="w-full bg-green-500  text-white p-2 rounded"
         >
           Sign Up
         </button>
+        <div className="h-[1px] w-full bg-black my-5" />
+
+        <div className="flex gap-2 items-center">
+          <p className="text-black">Already have an account ? </p>{" "}
+          <Link
+            className="text-black underline font-medium"
+            href="/auth/signin"
+          >
+            Signin
+          </Link>
+        </div>
       </form>
     </div>
   );
