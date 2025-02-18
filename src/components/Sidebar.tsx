@@ -48,17 +48,7 @@ const Sidebar = (props: Props) => {
           !isSidebarOpen ? "items-center" : ""
         } `}
       >
-        <Link
-          href="/"
-          className="py-2 px-3 rounded hover:bg-blue-500 flex items-center justify-between"
-        >
-          <span className={`${isSidebarOpen ? "inline" : "hidden"} ml-2`}>
-            Home
-          </span>
-          🏠
-        </Link>
-
-        
+       
 
         <Link
           href="/projects"

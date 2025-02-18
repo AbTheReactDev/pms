@@ -23,7 +23,7 @@ export default function SignIn() {
     if (result?.error) {
       alert("Invalid credentials or user not found");
     } else {
-      router.push("/");
+      router.push("/projects");
     }
   };
 

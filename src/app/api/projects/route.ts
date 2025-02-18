@@ -6,8 +6,13 @@ import dbConnect from "@/lib/mongoDB";
 
 export async function GET(request: Request) {
     await dbConnect();
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user) {
+        return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+    }
     try {
-        const projects = await Project.find().populate("owner");
+        const projects = await Project.find({ owner: session.user.id }).populate("owner", "name email");
         return NextResponse.json({ success: true, data: projects }, { status: 200 });
     } catch (error) {
         console.log(error);

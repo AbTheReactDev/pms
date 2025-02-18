@@ -36,7 +36,7 @@ const ProjectList = () => {
         <div className="max-w-5xl mx-auto mt-10">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold">Project List</h2>
-                <Link href="/create-project">
+                <Link href="/projects/create">
                     <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                         + New Project
                     </button>
@@ -63,7 +63,7 @@ const ProjectList = () => {
                                     <td className="p-3 border">{new Date(project?.startDate).toLocaleDateString()}</td>
                                     <td className="p-3 border">${project?.budget}</td>
                                     <td className="p-3 border text-center">
-                                        <Link href={`/dashboard/projects/${project?._id}`}>
+                                        <Link href={`/projects/${project?._id}`}>
                                             <button className="text-blue-600 hover:underline">View</button>
                                         </Link>
                                     </td>
