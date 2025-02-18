@@ -6,11 +6,11 @@ import dbConnect from '@/lib/mongoDB';
 export async function POST(request: Request) {
     try {
         await dbConnect();
-        const { name, email, password } = await request.json();
+        const { firstName, lastName, email, password } = await request.json();
 
-        if (!name || !email || !password) {
+        if (!firstName || !email || !password) {
             return NextResponse.json(
-                { message: 'Name, email and password are required' },
+                { message: 'Firstname, email and password are required' },
                 { status: 400 }
             );
         }
@@ -41,9 +41,11 @@ export async function POST(request: Request) {
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = new User({
-            name: name.trim(),
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
             email: email.toLowerCase(),
-            password: hashedPassword
+            password: hashedPassword,
+            name: `${firstName.trim()} ${lastName.trim()}`,
         });
 
         await newUser.save();
@@ -52,7 +54,7 @@ export async function POST(request: Request) {
             { status: 201 }
         );
     } catch (error) {
-        console.error(error.message)
+        console.error(error)
         return NextResponse.json(
             { message: 'Server error' },
             { status: 500 }

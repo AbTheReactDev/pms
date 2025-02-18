@@ -58,15 +58,8 @@ const Sidebar = (props: Props) => {
           🏠
         </Link>
 
-        <Link
-          href="/profile"
-          className="py-2 px-3 rounded hover:bg-blue-500 flex items-center justify-between"
-        >
-          <span className={`${isSidebarOpen ? "inline" : "hidden"} ml-2`}>
-            Profile
-          </span>
-          👤
-        </Link>
+        
+
         <Link
           href="/projects"
           className="py-2 px-3 rounded hover:bg-blue-500 flex items-center justify-between"
@@ -76,6 +69,8 @@ const Sidebar = (props: Props) => {
           </span>
           📝
         </Link>
+
+       
       </nav>
     </aside>
   );

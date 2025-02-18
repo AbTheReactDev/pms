@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 interface UserDocument extends mongoose.Document {
     name: string;
     email: string;
+    firstName: string;
+    lastName: string;
     password: string;
     gender: string;
     contactNo: string;
@@ -11,6 +13,16 @@ interface UserDocument extends mongoose.Document {
 
 const userSchema = new mongoose.Schema<UserDocument>({
     name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    firstName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    lastName: {
         type: String,
         required: true,
         trim: true
@@ -27,8 +39,8 @@ const userSchema = new mongoose.Schema<UserDocument>({
         type: String,
         required: true
     },
-    gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
-    contactNo: { type: String, required: true },
+    gender: { type: String, enum: ['male', 'female', 'other'] },
+    contactNo: { type: String },
     profilePicture: { type: String },
 }, {
     timestamps: true

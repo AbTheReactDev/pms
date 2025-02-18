@@ -22,7 +22,7 @@ export default function LayoutWrapper({
       <Sidebar />
       <div className={`flex-1 transition-all duration-300`}>
         <Navbar />
-        <main className="p-2">{children}</main>
+        <main className="p-3">{children}</main>
       </div>
     </div>
   );

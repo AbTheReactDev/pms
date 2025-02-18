@@ -2,8 +2,7 @@ import User from '@/models/User';
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from './mongoDB';
-import bcrypt from 'bcrypt'
-
+import bcrypt from 'bcrypt';
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -37,19 +36,47 @@ export const authOptions: NextAuthOptions = {
                         id: user._id.toString(),
                         email: user.email,
                         name: user.name,
+                        contactNo: user.contactNo,
+                        gender: user.gender,
+                        firstName: user?.firstName,
+                        lastName: user?.lastName,
+                        profilePicture: user.profilePicture
                     };
                 } catch (error) {
                     console.error('Auth error:', error);
                     return null;
                 }
             }
-        }),
-
+        })
     ],
     session: {
         strategy: 'jwt'
     },
     pages: {
         signIn: '/auth/signin'
+    },
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.firstName = user.firstName;
+                token.lastName = user.lastName;
+                token.gender = user.gender;
+                token.contactNo = user.contactNo;
+                token.profilePicture = user.profilePicture;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                session.user.id = token.id as string;
+                session.user.contactNo = token.contactNo as string;
+                session.user.gender = token.gender as string;
+                session.user.firstName = token.firstName as string;
+                session.user.lastName = token.lastName as string;
+                session.user.profilePicture = token.profilePicture as string;
+            }
+            return session;
+        }
     }
 };

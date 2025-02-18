@@ -4,7 +4,8 @@ import React, { useState } from "react";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
   });
@@ -29,6 +30,7 @@ export default function SignUp() {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
@@ -41,13 +43,30 @@ export default function SignUp() {
             htmlFor="name"
             className="block text-black text-sm font-medium"
           >
-            Name
+            First Name
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border rounded text-black"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-black text-sm font-medium"
+          >
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
             onChange={handleChange}
             className="w-full mt-1 p-2 border rounded text-black"
             required
