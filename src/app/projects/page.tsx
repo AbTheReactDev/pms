@@ -71,6 +71,7 @@ const ProjectList = () => {
               <th className="p-3 border">Title</th>
               <th className="p-3 border">Status</th>
               <th className="p-3 border">Start Date</th>
+              <th className="p-3 border">End Date</th>
               <th className="p-3 border">Budget</th>
               <th className="p-3 border text-center">Actions</th>
             </tr>
@@ -83,6 +84,9 @@ const ProjectList = () => {
                   <td className="p-3 border capitalize">{project?.status}</td>
                   <td className="p-3 border">
                     {new Date(project?.startDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-3 border">
+                    {new Date(project?.endDate).toLocaleDateString()}
                   </td>
                   <td className="p-3 border">${project?.budget}</td>
                   <td className="p-3 border text-center flex justify-center gap-2">

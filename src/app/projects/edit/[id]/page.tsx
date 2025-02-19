@@ -7,7 +7,7 @@ interface Project {
     title: string;
     description: string;
     startDate: string;
-    endDate?: string;
+    endDate: string;
     status: "not started" | "ongoing" | "completed" | "paused";
     technologies: string;
     budget: number;
@@ -16,6 +16,7 @@ interface Project {
 const EditProject = () => {
     const router = useRouter();
     const params = useParams();
+    const [isLoading,setIsLoading] = useState(false)
     const projectId = params?.id as string; // Ensure ID is a string
 
     const [project, setProject] = useState<Project | null>(null);
@@ -33,12 +34,10 @@ const EditProject = () => {
             const data = await res.json();
 
             if (!res.ok) throw new Error(data.message || "Failed to load project.");
-
             setProject({
-                ...data?.data?.project,
-                technologies: data?.data?.project?.technologies?.join(", ") || "", // Convert array to string
-                startDate: formatDate(data?.project?.startDate), // Format date correctly
-                endDate: data?.project?.endDate ? formatDate(data?.project?.endDate) : "", // Handle optional endDate
+                ...data?.data,
+                startDate: formatDate(data?.data?.startDate), // Format date correctly
+                endDate: data?.data?.endDate ? formatDate(data?.data?.endDate) : "", // Handle optional endDate
             });
 
             setLoading(false);
@@ -47,7 +46,7 @@ const EditProject = () => {
             setLoading(false);
         }
     };
-
+    
     const formatDate = (date?: string | Date): string => {
         return date ? new Date(date).toISOString().split("T")[0] : "";
     };
@@ -61,6 +60,7 @@ const EditProject = () => {
         e.preventDefault();
         setError("");
         setMessage("");
+        setLoading(true)
 
         if (!project) return;
 
@@ -70,7 +70,7 @@ const EditProject = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...project,
-                    technologies: project?.technologies?.split(",").map((tech) => tech.trim()), // Convert string to array
+                    technologies: project?.technologies, // Convert string to array
                 }),
             });
 
@@ -78,10 +78,11 @@ const EditProject = () => {
             if (!res.ok) throw new Error(data.message || "Failed to update project.");
 
             setMessage("Project updated successfully!");
-            router.push("/dashboard/projects");
+            router.push("/projects");
         } catch (err: any) {
             setError(err.message);
         }
+        setLoading(false)
     };
     
 
@@ -195,7 +196,7 @@ const EditProject = () => {
                     type="submit"
                     className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
                 >
-                    Update Project
+                   {isLoading ? "Loading..." :" Update Project"}
                 </button>
             </form>
         </div>
