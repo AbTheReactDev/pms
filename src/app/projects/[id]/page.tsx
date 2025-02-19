@@ -81,6 +81,10 @@ const ProjectDetail = () => {
         {new Date(project?.startDate).toLocaleDateString()}
       </div>
       <div className="mt-2">
+        <span className="font-semibold">End Date:</span>{" "}
+        {new Date(project?.endDate).toLocaleDateString()}
+      </div>
+      <div className="mt-2">
         <span className="font-semibold">Budget:</span> ${project?.budget}
       </div>
       <div className="mt-2">

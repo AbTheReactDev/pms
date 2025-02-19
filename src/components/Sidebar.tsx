@@ -1,19 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
-type Props = {};
+type Props = {
+  setIsSidebarOpen : Dispatch<SetStateAction<boolean>>
+  isSidebarOpen : boolean;
+};
 
-const Sidebar = (props: Props) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+const Sidebar = ({setIsSidebarOpen,isSidebarOpen}: Props) => {
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
   return (
     <aside
-      className={`bg-blue-600 text-white transition-all duration-300 ${
+      className={`bg-blue-600 text-white transition-all duration-300 fixed left-0 top-0 bottom-0 h-screen overflow-hidden ${
         isSidebarOpen ? "w-64" : "w-16"
       }`}
     >

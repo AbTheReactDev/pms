@@ -20,8 +20,8 @@ const Navbar = () => {
   }, [status, router]);
 
   return (
-    <header className="bg-white shadow p-4 flex justify-between">
-      <h1 className="text-2xl font-bold text-gray-700">PMS</h1>
+<header className="bg-white shadow p-4 flex justify-between sticky top-0 z-50">
+<h1 className="text-2xl font-bold text-gray-700">PMS</h1>
 
       <div className="flex gap-2 items-center">
         <h1 className="font-bold">
