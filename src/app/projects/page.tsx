@@ -88,7 +88,7 @@ const ProjectList = () => {
                   <td className="p-3 border">
                     {new Date(project?.endDate).toLocaleDateString()}
                   </td>
-                  <td className="p-3 border">${project?.budget}</td>
+                  <td className="p-3 border">Rs.{project?.budget}</td>
                   <td className="p-3 border text-center flex justify-center gap-2">
                     <Link href={`/projects/${project?._id}`}>
                       <button className="text-green-600 hover:underline border border-1 px-2">
