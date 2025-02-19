@@ -6,7 +6,7 @@ export default function Home() {
     const router = useRouter();
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className=" bg-gray-100">
             {/* Hero Section */}
             <header className="bg-blue-600 text-white py-16 text-center">
                 <h1 className="text-4xl font-bold">Manage Your Projects Efficiently</h1>
