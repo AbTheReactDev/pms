@@ -37,7 +37,8 @@ const EditProject = () => {
             setProject({
                 ...data?.data,
                 startDate: formatDate(data?.data?.startDate), // Format date correctly
-                endDate: data?.data?.endDate ? formatDate(data?.data?.endDate) : "", // Handle optional endDate
+                endDate: data?.data?.endDate ? formatDate(data?.data?.endDate) : "", 
+                ...data?.appLink,// Handle optional endDate
             });
 
             setLoading(false);
@@ -174,6 +175,17 @@ const EditProject = () => {
                         type="text"
                         name="technologies"
                         value={project?.technologies ?? ""}
+                        onChange={handleChange}
+                        className="w-full p-2 border rounded"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium">Link (Optional)</label>
+                    <input
+                        type="string"
+                        name="appLink"
+                        value={project?.appLink ?? ""}
                         onChange={handleChange}
                         className="w-full p-2 border rounded"
                         required
