@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { forbidden, useRouter } from "next/navigation";
+import { link } from "fs";
 
 const CreateProject = () => {
     const router = useRouter();
@@ -10,6 +11,7 @@ const CreateProject = () => {
         description: "",
         startDate: "",
         endDate: "",
+        appLink:"",
         status: "not started",
         technologies: "",
         budget: "",
@@ -31,6 +33,8 @@ const CreateProject = () => {
             ...formData,
             technologies: formData.technologies.split(",").map((tech) => tech.trim()),
             budget: parseFloat(formData.budget),
+            appLink:(formData.appLink)
+            
         };
 
         const res = await fetch("/api/projects", {
@@ -90,6 +94,7 @@ const CreateProject = () => {
                     name="endDate"
                     value={formData.endDate}
                     onChange={handleChange}
+                    placeholder="End Date"
                     className="w-full p-2 border rounded"
                 />
 
@@ -110,6 +115,16 @@ const CreateProject = () => {
                     className="w-full p-2 border rounded"
                 />
 
+<input
+                    type="string"
+                    name="appLink"
+                    value={formData.appLink}
+                    onChange={handleChange}
+                    placeholder="Link (Optional)"
+                    required
+                    className="w-full p-2 border rounded"
+                />
+
                 <input
                     type="number"
                     name="budget"
@@ -119,6 +134,8 @@ const CreateProject = () => {
                     required
                     className="w-full p-2 border rounded"
                 />
+
+                
 
                 <button
                     type="submit"

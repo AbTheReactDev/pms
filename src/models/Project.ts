@@ -6,6 +6,7 @@ interface ProjectDocument extends mongoose.Document {
     owner: mongoose.Types.ObjectId;  // reference to the User model
     startDate: Date;
     endDate: Date;
+    appLink:string;
     status: 'ongoing' | 'completed' | 'paused' | 'not started';
     technologies: string[]; // list of technologies used in the project
     budget: number;
@@ -34,6 +35,10 @@ const projectSchema = new mongoose.Schema<ProjectDocument>({
     },
     endDate: {
         type: Date,
+    },
+    appLink: {
+        type: String,
+        trim: true
     },
     status: {
         type: String,
