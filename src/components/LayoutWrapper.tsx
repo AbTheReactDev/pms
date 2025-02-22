@@ -10,7 +10,7 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const pathname = usePathname();
 

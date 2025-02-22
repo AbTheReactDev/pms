@@ -53,12 +53,15 @@ const ProjectList = () => {
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-4">
+    <div className="max-w-7xl mx-auto p-4">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Project List</h2>
         <Link href="/projects/create">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-2 sm:mt-0">
-            + New Project
+          <button className="bg-blue-500 flex gap-2 items-center text-white px-4 py-2 rounded hover:bg-blue-600 mt-2 sm:mt-0">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-5">
+  <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+</svg>
+ New Project
           </button>
         </Link>
       </div>
@@ -88,11 +91,11 @@ const ProjectList = () => {
                   <td className="p-3 border">
                     {new Date(project?.endDate).toLocaleDateString()}
                   </td>
-                  <td className="p-3 border break-words max-w-[100px]">{project?.appLink}</td>
+                  <td className="p-3 border break-words max-w-[100px]"><a className="text-fuchsia-700" href={project?.appLink}>Project Link</a></td>
                   <td className="p-3 border">Rs.{project?.budget}</td>
-                  <td className="p-3 border text-center flex justify-center gap-2">
+                  <td className="p-3 max-h-max flex justify-center items-center gap-2">
                     <Link href={`/projects/${project?._id}`}>
-                      <button className="text-green-600 hover:underline border border-1 px-2">
+                      <button  className="text-green-600 hover:underline border border-1 px-2">
                         View
                       </button>
                     </Link>
