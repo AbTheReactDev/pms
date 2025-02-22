@@ -10,6 +10,7 @@ const CreateTask = () => {
 
   const [formData, setFormData] = useState({
     title: "",
+    date:"",
     description: "",
     projectId: "",
   });
@@ -34,9 +35,11 @@ const CreateTask = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title: formData.title,
+        title: formData.title,  
+        date:formData.date,
         description: formData?.description,
         projectId: formData.projectId,
+
       }),
     });
 
@@ -83,6 +86,15 @@ const CreateTask = () => {
           onChange={handleChange}
           placeholder="Task Title"
           required
+          className="w-full p-2 border rounded"
+        />
+        <input
+          type="Date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          placeholder="date"
+          
           className="w-full p-2 border rounded"
         />
 

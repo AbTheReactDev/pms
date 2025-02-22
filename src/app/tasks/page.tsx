@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -29,26 +30,6 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
-  //   const handleDelete = async (id) => {
-  //     if (!confirm("Are you sure you want to delete this task?")) return;
-
-  //     try {
-  //       const res = await fetch(`/api/tasks/${id}`, {
-  //         method: "DELETE",
-  //       });
-
-  //       const data = await res.json();
-
-  //       if (!res.ok) {
-  //         throw new Error(data.message || "Failed to delete task.");
-  //       }
-
-  //       setTasks((prevtasks) => prevtasks.filter((p) => p._id !== id));
-  //     } catch (err) {
-  //       alert(err.message);
-  //     }
-  //   };
-
   if (loading) return <p className="text-center mt-5">Loading tasks...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
 
@@ -58,14 +39,6 @@ const Tasks = () => {
         <h2 className="text-2xl font-semibold">Task List</h2>
         <Link href="/tasks/create">
           <button className="bg-blue-500 flex gap-2 items-center text-white px-4 py-2 rounded hover:bg-blue-600 mt-2 sm:mt-0">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="size-5"
-            >
-              <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-            </svg>
             New Task
           </button>
         </Link>
@@ -76,6 +49,7 @@ const Tasks = () => {
           <thead>
             <tr className="bg-gray-100 text-left">
               <th className="p-3 border">Title</th>
+              <th className="p-3 border">Date</th>
               <th className="p-3 border">Description</th>
               <th className="p-3 border">Project ID</th>
               <th className="p-3 border text-center">Actions</th>
@@ -86,9 +60,11 @@ const Tasks = () => {
               tasks.map((task) => (
                 <tr key={task?._id} className="border-b hover:bg-gray-50">
                   <td className="p-3 border">{task?.title}</td>
+                  <td className="p-3 border">
+                    {dayjs(task?.date).format("DD MMM YYYY")}
+                  </td>
                   <td className="p-3 border capitalize">{task?.description}</td>
                   <td className="p-3 border capitalize">{task?.project}</td>
-
                   <td className="p-3 border text-center flex justify-center gap-2">
                     <Link href={`/tasks/${task?._id}`}>
                       <button className="text-green-600 hover:underline border border-1 px-2">
@@ -100,10 +76,7 @@ const Tasks = () => {
                         Edit
                       </button>
                     </Link>
-                    <button
-                      // onClick={() => handleDelete(task?._id)}
-                      className="text-red-600 hover:underline border border-1 px-2"
-                    >
+                    <button className="text-red-600 hover:underline border border-1 px-2">
                       Delete
                     </button>
                   </td>
@@ -128,15 +101,16 @@ const Tasks = () => {
                 className="bg-gray-50 p-4 mb-4 rounded-lg shadow-md"
               >
                 <h3 className="text-lg font-semibold">{task?.title}</h3>
+                <h3 className="text-lg font-semibold">
+                  {dayjs(task?.date).format("DD MMM YYYY")}
+                </h3>
                 <p className="text-sm">Status: {task?.status}</p>
                 <p className="text-sm">
-                  Start: {new Date(task?.startDate).toLocaleDateString()}
+                  Start: {dayjs(task?.startDate).format("DD MMM YYYY")}
                 </p>
                 <p className="text-sm">
-                  End: {new Date(task?.endDate).toLocaleDateString()}
+                  End: {dayjs(task?.endDate).format("DD MMM YYYY")}
                 </p>
-                <p className="text-sm break-words">Link: {task?.appLink}</p>
-                <p className="text-sm">Budget: Rs.{task?.budget}</p>
                 <div className="flex justify-between mt-2">
                   <Link href={`/tasks/${task?._id}`}>
                     <button className="text-green-600 hover:underline">
@@ -148,10 +122,7 @@ const Tasks = () => {
                       Edit
                     </button>
                   </Link>
-                  <button
-                    onClick={() => handleDelete(task?._id)}
-                    className="text-red-600 hover:underline"
-                  >
+                  <button className="text-red-600 hover:underline">
                     Delete
                   </button>
                 </div>

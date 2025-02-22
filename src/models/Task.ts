@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 interface TaskDocument extends mongoose.Document {
     title: string;
+    date:Date;
     description: string;
     project: mongoose.Types.ObjectId;  // Reference to the Project model
     assignedTo?: mongoose.Types.ObjectId;  // Optional reference to a User model
@@ -12,6 +13,11 @@ interface TaskDocument extends mongoose.Document {
 const taskSchema = new mongoose.Schema<TaskDocument>({
     title: {
         type: String,
+        required: true,
+        trim: true
+    },
+    date: {
+        type: Date,
         required: true,
         trim: true
     },

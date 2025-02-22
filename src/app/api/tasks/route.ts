@@ -7,12 +7,13 @@ import dbConnect from '@/lib/mongoDB';
 export async function POST(req: NextRequest) {
     try {
         await dbConnect();
-        const { title, description, projectId, assignedTo, status, dueDate } = await req.json();
+        const { title,date, description, projectId, assignedTo, status, dueDate } = await req.json();
 
       
 
         const task = await Task.create({
             title,
+            date,
             description,
             project: projectId,
             assignedTo,
