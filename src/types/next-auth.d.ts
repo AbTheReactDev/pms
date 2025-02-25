@@ -6,11 +6,12 @@ declare module "next-auth" {
             id: string;
             name: string;
             email: string;
+            firstName: string;
+            lastName: string;
             gender?: string;
             contactNo?: string;
             profilePicture?: string;
-            firstName?: string;
-            lastName?: string;
+            isAdmin?: boolean;
         } & DefaultSession["user"];
     }
 
@@ -18,10 +19,11 @@ declare module "next-auth" {
         id: string;
         name: string;
         email: string;
+        firstName: string;
+        lastName: string;
         gender?: string;
         contactNo?: string;
         profilePicture?: string;
-        firstName?: string;
-        lastName?: string;
+        isAdmin?: boolean;
     }
 }
