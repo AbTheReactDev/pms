@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     try {
         await dbConnect();
 
-        const tasks = await Task.find().populate('assignedTo');
+        const tasks = await Task.find().populate('project').populate('assignedTo');
         return NextResponse.json(tasks, { status: 200 });
     } catch (error) {
         console.log(error);
@@ -90,3 +90,5 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ error: 'Error deleting task' }, { status: 500 });
     }
 }
+
+

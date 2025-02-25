@@ -42,6 +42,7 @@ const CreateTask = () => {
 
     if (res.ok) {
       alert("Task created!");
+      router.push("/tasks");
     } else {
       router.push("/tasks"); // Redirect to tasks list
     }

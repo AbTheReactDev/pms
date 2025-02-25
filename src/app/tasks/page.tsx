@@ -3,8 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+interface Task {
+  _id: string;
+  date: string;
+  title: string;
+  description: string;
+  project: {
+    _id: string;
+    title: string;
+    // other project fields...
+  };
+  // other task fields...
+}
+
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -29,25 +42,25 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
-  //   const handleDelete = async (id) => {
-  //     if (!confirm("Are you sure you want to delete this task?")) return;
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this task?")) return;
 
-  //     try {
-  //       const res = await fetch(`/api/tasks/${id}`, {
-  //         method: "DELETE",
-  //       });
+    try {
+      const res = await fetch(`/api/tasks?taskId=${id}`, {
+        method: "DELETE",
+      });
 
-  //       const data = await res.json();
+      const data = await res.json();
 
-  //       if (!res.ok) {
-  //         throw new Error(data.message || "Failed to delete task.");
-  //       }
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to delete task.");
+      }
 
-  //       setTasks((prevtasks) => prevtasks.filter((p) => p._id !== id));
-  //     } catch (err) {
-  //       alert(err.message);
-  //     }
-  //   };
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
 
   if (loading) return <p className="text-center mt-5">Loading tasks...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
@@ -76,6 +89,7 @@ const Tasks = () => {
           <thead>
             <tr className="bg-gray-100 text-left">
               <th className="p-3 border">Title</th>
+              <th className="p-3 border">Date</th>
               <th className="p-3 border">Description</th>
               <th className="p-3 border">Project ID</th>
               <th className="p-3 border text-center">Actions</th>
@@ -86,8 +100,11 @@ const Tasks = () => {
               tasks.map((task) => (
                 <tr key={task?._id} className="border-b hover:bg-gray-50">
                   <td className="p-3 border">{task?.title}</td>
+                  <td className="p-3 border">
+                    {new Date().toLocaleString()}
+                  </td>
                   <td className="p-3 border capitalize">{task?.description}</td>
-                  <td className="p-3 border capitalize">{task?.project}</td>
+                  <td className="p-3 border capitalize">{task?.project?.title}</td>
 
                   <td className="p-3 border text-center flex justify-center gap-2">
                     <Link href={`/tasks/${task?._id}`}>
@@ -101,7 +118,7 @@ const Tasks = () => {
                       </button>
                     </Link>
                     <button
-                      // onClick={() => handleDelete(task?._id)}
+                      onClick={() => handleDelete(task?._id)}
                       className="text-red-600 hover:underline border border-1 px-2"
                     >
                       Delete
@@ -128,6 +145,7 @@ const Tasks = () => {
                 className="bg-gray-50 p-4 mb-4 rounded-lg shadow-md"
               >
                 <h3 className="text-lg font-semibold">{task?.title}</h3>
+                <p className="text-sm">Date: {new Date().toLocaleString()}</p>
                 <p className="text-sm">Status: {task?.status}</p>
                 <p className="text-sm">
                   Start: {new Date(task?.startDate).toLocaleDateString()}
