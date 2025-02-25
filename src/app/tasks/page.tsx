@@ -5,15 +5,13 @@ import Link from "next/link";
 
 interface Task {
   _id: string;
-  date: string;
   title: string;
   description: string;
+  createdAt: string;  // Add this field
   project: {
     _id: string;
     title: string;
-    // other project fields...
   };
-  // other task fields...
 }
 
 const Tasks = () => {
@@ -91,7 +89,7 @@ const Tasks = () => {
               <th className="p-3 border">Title</th>
               <th className="p-3 border">Date</th>
               <th className="p-3 border">Description</th>
-              <th className="p-3 border">Project ID</th>
+              <th className="p-3 border">Project Name</th>
               <th className="p-3 border text-center">Actions</th>
             </tr>
           </thead>
@@ -101,7 +99,7 @@ const Tasks = () => {
                 <tr key={task?._id} className="border-b hover:bg-gray-50">
                   <td className="p-3 border">{task?.title}</td>
                   <td className="p-3 border">
-                    {new Date().toLocaleString()}
+                    {new Date(task?.createdAt).toLocaleString()}
                   </td>
                   <td className="p-3 border capitalize">{task?.description}</td>
                   <td className="p-3 border capitalize">{task?.project?.title}</td>
@@ -145,7 +143,9 @@ const Tasks = () => {
                 className="bg-gray-50 p-4 mb-4 rounded-lg shadow-md"
               >
                 <h3 className="text-lg font-semibold">{task?.title}</h3>
-                <p className="text-sm">Date: {new Date().toLocaleString()}</p>
+                <p className="text-sm">
+                  Date: {new Date(task?.createdAt).toLocaleString()}
+                </p>
                 <p className="text-sm">Status: {task?.status}</p>
                 <p className="text-sm">
                   Start: {new Date(task?.startDate).toLocaleDateString()}
