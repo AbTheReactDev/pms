@@ -2,21 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import Task from '@/models/Task';
 import Project from '@/models/Project';
 import dbConnect from '@/lib/mongoDB';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
 
 // Create a new task
 export async function POST(req: NextRequest) {
+     const session = await getServerSession(authOptions);
+    
+        if (!session || !session.user) {
+            return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
+        }
     try {
         await dbConnect();
-        const { title, description, projectId, assignedTo, status, dueDate } = await req.json();
-
-      
-
+        const { title, description, projectId, status, dueDate } = await req.json();
         const task = await Task.create({
             title,
             description,
             project: projectId,
-            assignedTo,
-            status,
+            assignedTo : session.user?._id,
+            status : status || "not started",
             dueDate
         });
 

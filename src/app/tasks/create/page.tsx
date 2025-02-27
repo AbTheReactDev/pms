@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { title } from "process";
 
 const CreateTask = () => {
   const router = useRouter();
@@ -12,6 +11,7 @@ const CreateTask = () => {
     title: "",
     description: "",
     projectId: "",
+    dueDate: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +37,7 @@ const CreateTask = () => {
         title: formData.title,
         description: formData?.description,
         projectId: formData.projectId,
+        dueDate : formData.dueDate
       }),
     });
 
@@ -48,6 +49,7 @@ const CreateTask = () => {
     setLoading(false);
   };
 
+  
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -60,8 +62,8 @@ const CreateTask = () => {
         }
 
         setProjects(data?.data);
-      } catch (err) {
-        setError(err.message);
+      } catch (error) {
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -113,6 +115,16 @@ const CreateTask = () => {
             </option>
           )) || []}
         </select>
+
+        <input
+          type="date"
+          name="dueDate"
+          value={formData.dueDate}
+          onChange={handleChange}
+          placeholder="Due Date"
+          required
+          className="w-full p-2 border rounded"
+        />
 
         <button
           type="submit"
