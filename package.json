@@ -11,12 +11,8 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "bcrypt": "^5.1.1",
-<<<<<<< HEAD
     "cloudinary": "^2.5.1",
     "dayjs": "^1.11.13",
-=======
-    "chart.js": "^4.4.8",
->>>>>>> 280b245bd62ef4eee97e106a07768db9a23e1cbc
     "dotenv": "^16.4.7",
     "formidable": "^3.5.2",
     "mongoose": "^8.9.5",
