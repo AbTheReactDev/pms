@@ -9,6 +9,9 @@ interface UserDocument extends mongoose.Document {
     gender: string;
     contactNo: string;
     profilePicture: string;
+    isAdmin: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -42,6 +45,9 @@ const userSchema = new mongoose.Schema<UserDocument>({
     gender: { type: String, enum: ['male', 'female', 'other'] },
     contactNo: { type: String },
     profilePicture: { type: String },
+    isAdmin: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
 }, {
     timestamps: true
 });

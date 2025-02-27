@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 const TaskDetail = () => {
-  const { id } = useParams(); // Get task ID from URL
+  const { id } = useParams();
   const router = useRouter();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,9 +18,9 @@ const TaskDetail = () => {
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.message || "Failed to load task?.");
+          throw new Error(data.message || "Failed to load task.");
         }
-        setTask(data?.data);
+        setTask(data);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -35,7 +35,7 @@ const TaskDetail = () => {
     if (!confirm("Are you sure you want to delete this task?")) return;
 
     try {
-      const res = await fetch(`/api/tasks/${id}`, {
+      const res = await fetch(`/api/tasks?taskId=${id}`, {
         method: "DELETE",
       });
 
@@ -51,9 +51,7 @@ const TaskDetail = () => {
     }
   };
 
-  if (loading)
-    return <p className="text-center mt-5">Loading task details...</p>;
-  if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
+  if (loading) return <p className="text-center mt-5">Loading task details...</p>;
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
@@ -61,7 +59,7 @@ const TaskDetail = () => {
       <p className="text-gray-600 mt-2">{task?.description}</p>
 
       <div className="mt-4">
-        <span className="font-semibold">Owner:</span> {task?.owner?.name}
+        <span className="font-semibold">Project:</span> {task?.project?.title}
       </div>
       <div className="mt-2">
         <span className="font-semibold">Status:</span>
@@ -73,21 +71,18 @@ const TaskDetail = () => {
           {task?.status}
         </span>
       </div>
-      <div className="mt-2">
-        <span className="font-semibold">Start Date:</span>{" "}
-        {new Date(task?.startDate).toLocaleDateString()}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">End Date:</span>{" "}
-        {new Date(task?.endDate).toLocaleDateString()}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Budget:</span> ${task?.budget}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Technologies:</span>{" "}
-        {task?.technologies?.join(", ")}
-      </div>
+      {task?.assignedTo && (
+        <div className="mt-2">
+          <span className="font-semibold">Assigned To:</span>{" "}
+          {task?.assignedTo?.name}
+        </div>
+      )}
+      {task?.dueDate && (
+        <div className="mt-2">
+          <span className="font-semibold">Due Date:</span>{" "}
+          {new Date(task?.dueDate).toLocaleDateString()}
+        </div>
+      )}
 
       <div className="mt-6 flex space-x-4">
         <Link href="/tasks">
@@ -95,11 +90,16 @@ const TaskDetail = () => {
             Back
           </button>
         </Link>
+        <Link href={`/tasks/edit/${task?._id}`}>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Edit Task
+          </button>
+        </Link>
         <button
           onClick={() => handleDelete(task?._id)}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
         >
-          Delete task
+          Delete Task
         </button>
       </div>
     </div>
@@ -109,12 +109,12 @@ const TaskDetail = () => {
 // Helper function to style status labels
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "ongoing":
+    case "in progress":
       return "bg-yellow-500";
     case "completed":
       return "bg-green-500";
-    case "paused":
-      return "bg-red-500";
+    case "todo":
+      return "bg-blue-500";
     default:
       return "bg-gray-500";
   }

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Task from '@/models/Task';
 import Project from '@/models/Project';
 import dbConnect from '@/lib/mongoDB';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 // Create a new task
 export async function POST(req: NextRequest) {
@@ -32,16 +34,28 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// Get all tasks for a specific project
+// Get all tasks for user's projects
 export async function GET(req: NextRequest) {
     try {
         await dbConnect();
+        const session = await getServerSession(authOptions);
 
-        const tasks = await Task.find().populate('assignedTo');
+        if (!session || !session.user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        // First get all projects owned by the user
+        const userProjects = await Project.find({ owner: session.user.id });
+        const projectIds = userProjects.map(project => project._id);
+
+        // Then get all tasks for these projects
+        const tasks = await Task.find({ 
+            project: { $in: projectIds } 
+        }).populate('project').populate('assignedTo');
+
         return NextResponse.json(tasks, { status: 200 });
     } catch (error) {
         console.log(error);
-        
         return NextResponse.json({ error: 'Error fetching tasks' }, { status: 500 });
     }
 }
@@ -91,3 +105,5 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ error: 'Error deleting task' }, { status: 500 });
     }
 }
+
+

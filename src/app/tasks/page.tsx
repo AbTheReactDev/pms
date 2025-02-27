@@ -4,8 +4,19 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
 
+interface Task {
+  _id: string;
+  title: string;
+  description: string;
+  createdAt: string;  // Add this field
+  project: {
+    _id: string;
+    title: string;
+  };
+}
+
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -30,6 +41,29 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
+<<<<<<< HEAD
+=======
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this task?")) return;
+
+    try {
+      const res = await fetch(`/api/tasks?taskId=${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to delete task.");
+      }
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+>>>>>>> 280b245bd62ef4eee97e106a07768db9a23e1cbc
   if (loading) return <p className="text-center mt-5">Loading tasks...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
 
@@ -51,7 +85,7 @@ const Tasks = () => {
               <th className="p-3 border">Title</th>
               <th className="p-3 border">Date</th>
               <th className="p-3 border">Description</th>
-              <th className="p-3 border">Project ID</th>
+              <th className="p-3 border">Project Name</th>
               <th className="p-3 border text-center">Actions</th>
             </tr>
           </thead>
@@ -61,10 +95,18 @@ const Tasks = () => {
                 <tr key={task?._id} className="border-b hover:bg-gray-50">
                   <td className="p-3 border">{task?.title}</td>
                   <td className="p-3 border">
+<<<<<<< HEAD
                     {dayjs(task?.date).format("DD MMM YYYY")}
                   </td>
                   <td className="p-3 border capitalize">{task?.description}</td>
                   <td className="p-3 border capitalize">{task?.project}</td>
+=======
+                    {new Date(task?.createdAt).toLocaleString()}
+                  </td>
+                  <td className="p-3 border capitalize">{task?.description}</td>
+                  <td className="p-3 border capitalize">{task?.project?.title}</td>
+
+>>>>>>> 280b245bd62ef4eee97e106a07768db9a23e1cbc
                   <td className="p-3 border text-center flex justify-center gap-2">
                     <Link href={`/tasks/${task?._id}`}>
                       <button className="text-green-600 hover:underline border border-1 px-2">
@@ -76,7 +118,14 @@ const Tasks = () => {
                         Edit
                       </button>
                     </Link>
+<<<<<<< HEAD
                     <button className="text-red-600 hover:underline border border-1 px-2">
+=======
+                    <button
+                      onClick={() => handleDelete(task?._id)}
+                      className="text-red-600 hover:underline border border-1 px-2"
+                    >
+>>>>>>> 280b245bd62ef4eee97e106a07768db9a23e1cbc
                       Delete
                     </button>
                   </td>
@@ -101,9 +150,15 @@ const Tasks = () => {
                 className="bg-gray-50 p-4 mb-4 rounded-lg shadow-md"
               >
                 <h3 className="text-lg font-semibold">{task?.title}</h3>
+<<<<<<< HEAD
                 <h3 className="text-lg font-semibold">
                   {dayjs(task?.date).format("DD MMM YYYY")}
                 </h3>
+=======
+                <p className="text-sm">
+                  Date: {new Date(task?.createdAt).toLocaleString()}
+                </p>
+>>>>>>> 280b245bd62ef4eee97e106a07768db9a23e1cbc
                 <p className="text-sm">Status: {task?.status}</p>
                 <p className="text-sm">
                   Start: {dayjs(task?.startDate).format("DD MMM YYYY")}
