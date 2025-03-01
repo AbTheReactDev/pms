@@ -12,6 +12,7 @@ const CreateTask = () => {
     description: "",
     projectId: "",
     dueDate: "",
+    date: new Date().toISOString().split('T')[0]
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,7 +38,8 @@ const CreateTask = () => {
         title: formData.title,
         description: formData?.description,
         projectId: formData.projectId,
-        dueDate : formData.dueDate
+        dueDate: formData.dueDate,
+        date: formData.date
       }),
     });
 
