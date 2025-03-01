@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     await dbConnect();
     try {
-        const project = await Task.findById(params.id).populate("assignedTo");
+        const project = await Task.findById(params.id).populate("assignedTo").populate('project');
         if (!project) return NextResponse.json({ success: false, message: "Task not found" }, { status: 404 });
 
         return NextResponse.json({ success: true, data: project }, { status: 200 });

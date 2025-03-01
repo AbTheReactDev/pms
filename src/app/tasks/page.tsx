@@ -9,6 +9,7 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  console.log(tasks);
   
 
   useEffect(() => {
@@ -81,7 +82,7 @@ const Tasks = () => {
             <tr className="bg-gray-100 text-left">
               <th className="p-3 border">Title</th>
               <th className="p-3 border">Description</th>
-              <th className="p-3 border">Project ID</th>
+              <th className="p-3 border">Project Name</th>
               <th className="p-3 border text-center">Actions</th>
             </tr>
           </thead>
@@ -91,7 +92,7 @@ const Tasks = () => {
                 <tr key={task?._id} className="border-b hover:bg-gray-50">
                   <td className="p-3 border">{task?.title}</td>
                   <td className="p-3 border capitalize">{task?.description}</td>
-                  <td className="p-3 border capitalize">{task?.project}</td>
+                  <td className="p-3 border capitalize">{task?.project?.title}</td>
 
                   <td className="p-3 border text-center flex justify-center gap-2">
                     <Link href={`/tasks/${task?._id}`}>

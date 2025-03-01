@@ -21,8 +21,6 @@ const ProjectDetail = () => {
           throw new Error(data.message || "Failed to load project?.");
         }
 
-        console.log(data);
-
         setProject(data?.data);
       } catch (err: any) {
         setError(err.message);
@@ -57,58 +55,68 @@ const ProjectDetail = () => {
   if (loading)
     return <p className="text-center mt-5">Loading project details...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
-console.log(project);
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-3xl font-semibold">{project?.title}</h1>
-      <p className="text-gray-600 mt-2">{project?.description}</p>
+    <>
+      <div className=" mt-10 p-6 bg-white shadow-md rounded-lg">
+        <h1 className="text-3xl font-semibold">{project?.title}</h1>
+        <p className="text-gray-600 mt-2">{project?.description}</p>
 
-      <div className="mt-4">
-        <span className="font-semibold">Owner:</span> {project?.owner?.name}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Status:</span>
-        <span
-          className={`ml-2 px-2 py-1 rounded text-white ${getStatusColor(
-            project?.status
-          )}`}
-        >
-          {project?.status}
-        </span>
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Start Date:</span>{" "}
-        {new Date(project?.startDate).toLocaleDateString()}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">End Date:</span>{" "}
-        {new Date(project?.endDate).toLocaleDateString()}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Budget:</span> ${project?.budget}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Technologies:</span>{" "}
-        {project?.technologies?.join(", ")}
-      </div>
-    
-      
+        <div className="mt-4">
+          <span className="font-semibold">Owner:</span> {project?.owner?.name}
+        </div>
+        <div className="mt-2">
+          <span className="font-semibold">Status:</span>
+          <span
+            className={`ml-2 px-2 py-1 rounded text-white ${getStatusColor(
+              project?.status
+            )}`}
+          >
+            {project?.status}
+          </span>
+        </div>
+        <div className="mt-2">
+          <span className="font-semibold">Start Date:</span>{" "}
+          {new Date(project?.startDate).toLocaleDateString()}
+        </div>
+        <div className="mt-2">
+          <span className="font-semibold">End Date:</span>{" "}
+          {new Date(project?.endDate).toLocaleDateString()}
+        </div>
+        <div className="mt-2">
+          <span className="font-semibold">Budget:</span> ${project?.budget}
+        </div>
+        <div className="mt-2">
+          <span className="font-semibold">Technologies:</span>{" "}
+          {project?.technologies?.join(", ")}
+        </div>
 
-      <div className="mt-6 flex space-x-4">
-        <Link href="/projects">
-          <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-            Back
+        <div className="mt-6 flex space-x-4">
+          <Link href="/projects">
+            <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+              Back
+            </button>
+          </Link>
+          <button
+            onClick={() => handleDelete(project?._id)}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Delete Project
           </button>
-        </Link>
-        <button
-          onClick={() => handleDelete(project?._id)}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Delete Project
-        </button>
+        </div>
       </div>
-    </div>
+
+      <div className=" mt-5 p-6 bg-white shadow-md rounded-lg">
+        <div className="mt-2">
+          <span className="font-semibold text-2xl">Tasks:</span>{" "}
+          {project?.tasks?.map((task) => (
+            <div key={task._id}>
+              <p>{task.title}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -2,31 +2,50 @@ import { NextRequest, NextResponse } from "next/server";
 import Task from "@/models/Task";
 import Project from "@/models/Project";
 import dbConnect from "@/lib/mongoDB";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: NextRequest) {
-    await dbConnect();
-    const { title, description, projectId, assignedTo, status, dueDate } = await req.json();
+  await dbConnect();
+  const session = await getServerSession(authOptions);
 
-    try {
-        const project = await Project.findById(projectId);
-        if (!project) return NextResponse.json({ message: "Project not found", status: 400 });
+  const { title, description, projectId, status, dueDate } = await req.json();
 
-        const newTask = await Task.create({ title, description, project: projectId, assignedTo, status, dueDate });
+  try {
+    const project = await Project.findById(projectId);
+    if (!project)
+      return NextResponse.json({ message: "Project not found", status: 400 });
 
-        project.tasks.push(newTask._id);
-        await project.save();
+    const newTask = await Task.create({
+      title,
+      description,
+      project: projectId,
+      assignedTo: session?.user,
+      status,
+      dueDate,
+    });
 
-        return NextResponse.json({ message: "Task added successfully", data: newTask, status: 201 });
-    } catch (error) {
-        return NextResponse.json({ message: "Internal Server Error", error, status: 500 });
-    }
+    project.tasks.push(newTask._id);
+    await project.save();
+
+    return NextResponse.json({
+      message: "Task added successfully",
+      data: newTask,
+      status: 201,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      message: "Internal Server Error",
+      error,
+      status: 500,
+    });
+  }
 }
-
 
 export async function GET() {
   try {
     await dbConnect();
-    const tasks = await Task.find().populate("assignedTo");
+    const tasks = await Task.find().populate("project");
     return NextResponse.json(tasks, { status: 200 });
   } catch (error) {
     console.log(error);
