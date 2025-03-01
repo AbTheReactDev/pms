@@ -32,7 +32,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
             return NextResponse.json({ success: false, message: "Project not found" }, { status: 404 });
         }
 
-        // Ensure only the project owner can edit
         if (project.owner.toString() !== session.user.id) {
             return NextResponse.json({ success: false, message: "Forbidden" }, { status: 403 });
         }
@@ -51,7 +50,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
     await dbConnect();
 
-    // Get the logged-in user session
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
