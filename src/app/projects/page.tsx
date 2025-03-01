@@ -8,28 +8,30 @@ const ProjectList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await fetch("/api/projects");
-        const data = await res.json();
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error(data.message || "Failed to load projects.");
-        }
-
-        setProjects(data?.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to load projects.");
       }
-    };
+      setProjects(data?.data);
+    } catch (err) {
+      console.log(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+
+  useEffect(() => {
     fetchProjects();
   }, []);
 
-  const handleDelete = async (id) => {
+
+  const handleDelete = async (id:string) => {
     if (!confirm("Are you sure you want to delete this project?")) return;
 
     try {
@@ -45,9 +47,12 @@ const ProjectList = () => {
 
       setProjects((prevProjects) => prevProjects.filter((p) => p._id !== id));
     } catch (err) {
-      alert(err.message);
+      console.log(err);
+      
     }
   };
+
+  
 
   if (loading) return <p className="text-center mt-5">Loading projects...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;

@@ -41,10 +41,13 @@ const CreateTask = () => {
       }),
     });
 
-    if (res.ok) {
-      alert("Task created!");
-      router.push("/tasks"); // Redirect to tasks list
-    } 
+    console.log(res);
+    
+
+    // if (res.ok) {
+    //   alert("Task created!");
+    //   router.push("/tasks"); // Redirect to tasks list
+    // } 
     setLoading(false);
   };
 
@@ -120,7 +123,6 @@ const CreateTask = () => {
           value={formData.dueDate}
           onChange={handleChange}
           placeholder="Due Date"
-          required
           className="w-full p-2 border rounded"
         />
 

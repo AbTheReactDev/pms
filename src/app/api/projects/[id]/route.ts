@@ -3,6 +3,7 @@ import Project from "@/models/Project";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/mongoDB";
+import Task from "@/models/Task";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     await dbConnect();
@@ -66,6 +67,8 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
         if (project.owner.toString() !== session.user.id) {
             return NextResponse.json({ success: false, message: "Forbidden" }, { status: 403 });
         }
+        
+        await Task.deleteMany({ project: params.id });
 
         await Project.findByIdAndDelete(params.id);
 

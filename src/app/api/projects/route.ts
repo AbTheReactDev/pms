@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/mongoDB";
 
-export async function GET(request: Request) {
+export async function GET() {
     await dbConnect();
     const session = await getServerSession(authOptions);
 
@@ -12,13 +12,20 @@ export async function GET(request: Request) {
         return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
     }
     try {
-        const projects = await Project.find({ owner: session.user.id }).populate("owner", "name email");
+        const projects = await Project.find({ owner: session.user.id })
+            .populate("owner", "name email")
+            .populate({
+                path: "tasks",
+                populate: { path: "assignedTo", select: "name email" } // Populate assignedTo field inside tasks
+            });
+
         return NextResponse.json({ success: true, data: projects }, { status: 200 });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ success: false, message: "Error fetching projects" }, { status: 500 });
     }
 }
+
 
 export async function POST(request: Request) {
     await dbConnect();

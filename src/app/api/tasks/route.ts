@@ -2,42 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import Task from "@/models/Task";
 import Project from "@/models/Project";
 import dbConnect from "@/lib/mongoDB";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-
-  if (!session || !session.user) {
-    return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 }
-    );
-  }
-  try {
     await dbConnect();
-    const { title, description, projectId, status, dueDate } = await req.json();
+    const { title, description, projectId, assignedTo, status, dueDate } = await req.json();
 
-    const task = await Task.create({
-      title,
-      description,
-      project: projectId,
-      assignedTo: session.user.id,
-      status: status || "todo",
-      dueDate,
-    });
+    try {
+        const project = await Project.findById(projectId);
+        if (!project) return NextResponse.json({ message: "Project not found", status: 400 });
 
-    await Project.findByIdAndUpdate(projectId, { $push: { tasks: task } });
+        const newTask = await Task.create({ title, description, project: projectId, assignedTo, status, dueDate });
 
-    return NextResponse.json({ status: 201 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ error: "Error creating task" }, { status: 500 });
-  }
+        project.tasks.push(newTask._id);
+        await project.save();
+
+        return NextResponse.json({ message: "Task added successfully", data: newTask, status: 201 });
+    } catch (error) {
+        return NextResponse.json({ message: "Internal Server Error", error, status: 500 });
+    }
 }
 
-// Get all tasks for a specific project
-export async function GET(req: NextRequest) {
+
+export async function GET() {
   try {
     await dbConnect();
 
