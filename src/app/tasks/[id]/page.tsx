@@ -43,8 +43,9 @@ const TaskDetail = () => {
 
       if (!res.ok) {
         throw new Error(data.message || "Failed to delete task.");
+      }else{
+        alert("Task deleted successfully");
       }
-
       router.push("/tasks");
     } catch (err: any) {
       alert(err.message);
@@ -55,39 +56,30 @@ const TaskDetail = () => {
     return <p className="text-center mt-5">Loading task details...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
 
+  console.log(task);
+  
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h1 className="text-3xl font-semibold">{task?.title}</h1>
       <p className="text-gray-600 mt-2">{task?.description}</p>
 
-      <div className="mt-4">
-        <span className="font-semibold">Owner:</span> {task?.owner?.name}
-      </div>
+      
       <div className="mt-2">
         <span className="font-semibold">Status:</span>
         <span
-          className={`ml-2 px-2 py-1 rounded text-white ${getStatusColor(
+          className={`ml-2 px-2 py-1 rounded text-sm text-white ${getStatusColor(
             task?.status
           )}`}
         >
           {task?.status}
         </span>
       </div>
-      <div className="mt-2">
-        <span className="font-semibold">Start Date:</span>{" "}
-        {new Date(task?.startDate).toLocaleDateString()}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">End Date:</span>{" "}
-        {new Date(task?.endDate).toLocaleDateString()}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Budget:</span> ${task?.budget}
-      </div>
-      <div className="mt-2">
-        <span className="font-semibold">Technologies:</span>{" "}
-        {task?.technologies?.join(", ")}
-      </div>
+
+      <p className="text-gray-600 mt-2">Created At : {new Date(task?.createdAt).toLocaleDateString()}</p>
+      <p className="text-gray-600 mt-2">Due Date : {new Date(task?.dueDate).toLocaleDateString()}</p>
+
+     
+     
 
       <div className="mt-6 flex space-x-4">
         <Link href="/tasks">

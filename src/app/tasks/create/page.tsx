@@ -43,9 +43,8 @@ const CreateTask = () => {
 
     if (res.ok) {
       alert("Task created!");
-    } else {
       router.push("/tasks"); // Redirect to tasks list
-    }
+    } 
     setLoading(false);
   };
 
@@ -60,7 +59,6 @@ const CreateTask = () => {
         if (!res.ok) {
           throw new Error(data.message || "Failed to load projects.");
         }
-
         setProjects(data?.data);
       } catch (error) {
         setError(error.message);

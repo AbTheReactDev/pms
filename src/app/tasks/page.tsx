@@ -29,25 +29,26 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
-  //   const handleDelete = async (id) => {
-  //     if (!confirm("Are you sure you want to delete this task?")) return;
+    const handleDelete = async (id : string) => {
+      if (!confirm("Are you sure you want to delete this task?")) return;
 
-  //     try {
-  //       const res = await fetch(`/api/tasks/${id}`, {
-  //         method: "DELETE",
-  //       });
+      try {
+        const res = await fetch(`/api/tasks/${id}`, {
+          method: "DELETE",
+        });
 
-  //       const data = await res.json();
+        const data = await res.json();
 
-  //       if (!res.ok) {
-  //         throw new Error(data.message || "Failed to delete task.");
-  //       }
-
-  //       setTasks((prevtasks) => prevtasks.filter((p) => p._id !== id));
-  //     } catch (err) {
-  //       alert(err.message);
-  //     }
-  //   };
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to delete task.");
+        }else{
+          setTasks((prevtasks) => prevtasks.filter((p) => p._id !== id));
+          alert("Task deleted successfully");
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    };
 
   if (loading) return <p className="text-center mt-5">Loading tasks...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
@@ -101,7 +102,7 @@ const Tasks = () => {
                       </button>
                     </Link>
                     <button
-                      // onClick={() => handleDelete(task?._id)}
+                      onClick={() => handleDelete(task?._id)}
                       className="text-red-600 hover:underline border border-1 px-2"
                     >
                       Delete

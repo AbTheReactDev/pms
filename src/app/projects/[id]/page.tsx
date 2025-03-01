@@ -57,6 +57,7 @@ const ProjectDetail = () => {
   if (loading)
     return <p className="text-center mt-5">Loading project details...</p>;
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
+console.log(project);
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
@@ -91,6 +92,8 @@ const ProjectDetail = () => {
         <span className="font-semibold">Technologies:</span>{" "}
         {project?.technologies?.join(", ")}
       </div>
+
+      
 
       <div className="mt-6 flex space-x-4">
         <Link href="/projects">
