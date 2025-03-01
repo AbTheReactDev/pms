@@ -9,38 +9,42 @@ interface TaskDocument extends mongoose.Document {
     dueDate?: Date;
 }
 
-const taskSchema = new mongoose.Schema<TaskDocument>({
-    title: {
-        type: String,
-        required: true,
-        trim: true
+const taskSchema = new mongoose.Schema<TaskDocument>(
+    {
+        title: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        description: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        project: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project',
+            required: true,
+            index: true  // Added for faster queries
+        },
+        assignedTo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: false  // Fixed: made it optional
+        },
+        status: {
+            type: String,
+            enum: ['todo', 'in progress', 'completed'],
+            default: 'todo'
+        },
+        dueDate: {
+            type: Date
+        }
     },
-    description: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    project: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project',
-        required: true
-    },
-    assignedTo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    status: {
-        type: String,
-        enum: ['todo', 'in progress', 'completed'],
-        default: 'todo'
-    },
-    dueDate: {
-        type: Date
+    {
+        timestamps: true
     }
-}, {
-    timestamps: true
-});
+);
 
 const Task = mongoose.models.Task || mongoose.model<TaskDocument>('Task', taskSchema);
 

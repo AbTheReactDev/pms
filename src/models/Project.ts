@@ -3,67 +3,78 @@ import mongoose from 'mongoose';
 interface ProjectDocument extends mongoose.Document {
     title: string;
     description: string;
-    owner: mongoose.Types.ObjectId;  // reference to the User model
+    owner: mongoose.Types.ObjectId;  // Reference to the User model
     startDate: Date;
-    endDate: Date;
-    appLink:string;
+    endDate?: Date;
+    appLink?: string;
     status: 'ongoing' | 'completed' | 'paused' | 'not started';
-    technologies: string[]; // list of technologies used in the project
+    technologies: string[]; 
     budget: number;
-    tasks: mongoose.Types.ObjectId[]; // reference to an array of Task models (optional, depending on your structure)
+    tasks: mongoose.Types.ObjectId[]; 
 }
 
-const projectSchema = new mongoose.Schema<ProjectDocument>({
-    title: {
-        type: String,
-        required: true,
-        trim: true
+const projectSchema = new mongoose.Schema<ProjectDocument>(
+    {
+        title: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        description: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',  
+            required: true,
+            index: true  // Added for better query performance
+        },
+        startDate: {
+            type: Date,
+            required: true
+        },
+        endDate: {
+            type: Date,
+            validate: {
+                validator: function (this: ProjectDocument, value: Date) {
+                    return !value || value >= this.startDate;
+                },
+                message: "End date must be after the start date"
+            }
+        },
+        appLink: {
+            type: String,
+            trim: true
+        },
+        status: {
+            type: String,
+            enum: ['ongoing', 'completed', 'paused', 'not started'],
+            default: 'not started'
+        },
+        technologies: {
+            type: [String],
+            required: true,
+            default: []  // Ensure it's always an array
+        },
+        budget: {
+            type: Number,
+            required: true
+        },
+        tasks: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Task'
+            }
+        ]
     },
-    description: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',  // Reference to the User model (assuming you're associating a project with a user)
-        required: true
-    },
-    startDate: {
-        type: Date,
-        required: true
-    },
-    endDate: {
-        type: Date,
-    },
-    appLink: {
-        type: String,
-        trim: true
-    },
-    status: {
-        type: String,
-        enum: ['ongoing', 'completed', 'paused', 'not started'],
-        default: 'not started'
-    },
-    technologies: {
-        type: [String],
-        required: true
-    },
-    budget: {
-        type: Number,
-        required: true
-    },
-    tasks: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task'  // Reference to Task model, if you're tracking tasks in a project (optional)
-    }]
-}, {
-    timestamps: true
-});
+    {
+        timestamps: true
+    }
+);
 
-// This will create the Project model if it doesn't exist already
 const Project = mongoose.models.Project || mongoose.model<ProjectDocument>('Project', projectSchema);
 
 export default Project;
-
 export type { ProjectDocument };
