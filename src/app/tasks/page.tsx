@@ -9,6 +9,8 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -121,48 +123,7 @@ const Tasks = () => {
           </tbody>
         </table>
 
-        {/* Mobile View */}
-        <div className="sm:hidden">
-          {tasks?.length > 0 ? (
-            tasks.map((task) => (
-              <div
-                key={task?._id}
-                className="bg-gray-50 p-4 mb-4 rounded-lg shadow-md"
-              >
-                <h3 className="text-lg font-semibold">{task?.title}</h3>
-                <p className="text-sm">Status: {task?.status}</p>
-                <p className="text-sm">
-                  Start: {new Date(task?.startDate).toLocaleDateString()}
-                </p>
-                <p className="text-sm">
-                  End: {new Date(task?.endDate).toLocaleDateString()}
-                </p>
-                <p className="text-sm break-words">Link: {task?.appLink}</p>
-                <p className="text-sm">Budget: Rs.{task?.budget}</p>
-                <div className="flex justify-between mt-2">
-                  <Link href={`/tasks/${task?._id}`}>
-                    <button className="text-green-600 hover:underline">
-                      View
-                    </button>
-                  </Link>
-                  <Link href={`/tasks/edit/${task?._id}`}>
-                    <button className="text-blue-600 hover:underline">
-                      Edit
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(task?._id)}
-                    className="text-red-600 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center p-4">No tasks found.</p>
-          )}
-        </div>
+      
       </div>
     </div>
   );

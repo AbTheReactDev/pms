@@ -40,14 +40,11 @@ const CreateTask = () => {
         dueDate : formData.dueDate
       }),
     });
-
-    console.log(res);
     
-
-    // if (res.ok) {
-    //   alert("Task created!");
-    //   router.push("/tasks"); // Redirect to tasks list
-    // } 
+    if (res.ok) {
+      alert("Task created!");
+      router.push("/tasks"); // Redirect to tasks list
+    } 
     setLoading(false);
   };
 

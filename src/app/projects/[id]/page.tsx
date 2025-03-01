@@ -92,7 +92,7 @@ console.log(project);
         <span className="font-semibold">Technologies:</span>{" "}
         {project?.technologies?.join(", ")}
       </div>
-
+    
       
 
       <div className="mt-6 flex space-x-4">

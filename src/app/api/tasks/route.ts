@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     await dbConnect();
-
     const tasks = await Task.find().populate("assignedTo");
     return NextResponse.json(tasks, { status: 200 });
   } catch (error) {
