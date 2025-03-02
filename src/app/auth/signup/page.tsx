@@ -1,35 +1,35 @@
-"use client";
-import Link from "next/link";
-import React, { useState } from "react";
+'use client'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+  })
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    event.preventDefault()
+    const response = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
-    });
+    })
 
     if (response.ok) {
-      alert("User registered successfully");
+      alert('User registered successfully')
     } else {
-      const error = await response.json();
-      alert(error.error);
+      const error = await response.json()
+      alert(error.error)
     }
-  };
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = event.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -116,7 +116,7 @@ export default function SignUp() {
         <div className="h-[1px] w-full bg-black my-5" />
 
         <div className="flex gap-2 items-center">
-          <p className="text-black">Already have an account ? </p>{" "}
+          <p className="text-black">Already have an account ? </p>{' '}
           <Link
             className="text-black underline font-medium"
             href="/auth/signin"
@@ -126,5 +126,5 @@ export default function SignUp() {
         </div>
       </form>
     </div>
-  );
+  )
 }

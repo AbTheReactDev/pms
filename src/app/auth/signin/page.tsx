@@ -1,31 +1,31 @@
-"use client";
+'use client'
 
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { signIn } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function SignIn() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
-    event.preventDefault();
-    const result = await signIn("credentials", {
+    setIsLoading(true)
+    event.preventDefault()
+    const result = await signIn('credentials', {
       email,
       password,
       redirect: false,
-    });
+    })
 
     if (result?.error) {
-      alert("Invalid credentials or user not found");
+      alert('Invalid credentials or user not found')
     } else {
-      router.push("/projects");
+      router.push('/projects')
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -70,11 +70,11 @@ export default function SignIn() {
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded"
         >
-          {isLoading ? "Loading..." : "Sign In"}
+          {isLoading ? 'Loading...' : 'Sign In'}
         </button>
         <div className="h-[1px] w-full bg-black my-5" />
         <div className="flex gap-2 items-center">
-          <p className="text-black">Dont have an account ? </p>{" "}
+          <p className="text-black">Dont have an account ? </p>{' '}
           <Link
             className="text-black underline font-medium"
             href="/auth/signup"
@@ -84,5 +84,5 @@ export default function SignIn() {
         </div>
       </form>
     </div>
-  );
+  )
 }

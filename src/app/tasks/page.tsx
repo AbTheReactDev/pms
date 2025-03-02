@@ -1,68 +1,68 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  createdAt: string;  // Add this field
-  status: string;  // Add status field
+  _id: string
+  title: string
+  description: string
+  createdAt: string // Add this field
+  status: string // Add status field
   project: {
-    _id: string;
-    title: string;
-  };
+    _id: string
+    title: string
+  }
 }
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await fetch("/api/tasks");
-        const data = await res.json();
+        const res = await fetch('/api/tasks')
+        const data = await res.json()
 
         if (!res.ok) {
-          throw new Error(data.message || "Failed to load tasks.");
+          throw new Error(data.message || 'Failed to load tasks.')
         }
 
-        setTasks(data);
+        setTasks(data)
       } catch (error) {
-        setError(error.message);
+        setError(error.message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchTasks();
-  }, []);
+    fetchTasks()
+  }, [])
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
+    if (!confirm('Are you sure you want to delete this task?')) return
 
     try {
       const res = await fetch(`/api/tasks?taskId=${id}`, {
-        method: "DELETE",
-      });
+        method: 'DELETE',
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.message || "Failed to delete task.");
+        throw new Error(data.message || 'Failed to delete task.')
       }
 
-      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id))
     } catch (err: any) {
-      alert(err.message);
+      alert(err.message)
     }
-  };
+  }
 
-  if (loading) return <p className="text-center mt-5">Loading tasks...</p>;
-  if (error) return <p className="text-center text-red-500 mt-5">{error}</p>;
+  if (loading) return <p className="text-center mt-5">Loading tasks...</p>
+  if (error) return <p className="text-center text-red-500 mt-5">{error}</p>
 
   return (
     <div className="max-w-7xl mx-auto p-4">
@@ -97,7 +97,9 @@ const Tasks = () => {
                   </td>
                   <td className="p-3 border capitalize">{task?.description}</td>
                   <td className="p-3 border capitalize">{task?.status}</td>
-                  <td className="p-3 border capitalize">{task?.project?.title}</td>
+                  <td className="p-3 border capitalize">
+                    {task?.project?.title}
+                  </td>
 
                   <td className="p-3 border text-center flex justify-center gap-2">
                     <Link href={`/tasks/${task?._id}`}>
@@ -142,8 +144,12 @@ const Tasks = () => {
                   Date: {new Date(task?.createdAt).toLocaleString()}
                 </p>
                 <p className="text-sm capitalize">Status: {task?.status}</p>
-                <p className="text-sm capitalize">Description: {task?.description}</p>
-                <p className="text-sm capitalize">Project: {task?.project?.title}</p>
+                <p className="text-sm capitalize">
+                  Description: {task?.description}
+                </p>
+                <p className="text-sm capitalize">
+                  Project: {task?.project?.title}
+                </p>
                 <div className="flex justify-between mt-2">
                   <Link href={`/tasks/${task?._id}`}>
                     <button className="text-green-600 hover:underline">
@@ -167,7 +173,7 @@ const Tasks = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Tasks;
+export default Tasks
