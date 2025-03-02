@@ -57,13 +57,13 @@ const ProjectDetail = () => {
   if (loading)
     return <p className="text-center mt-5">Loading project details...</p>
   if (error) return <p className="text-center text-red-500 mt-5">{error}</p>
+
   console.log(project)
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h1 className="text-3xl font-semibold">{project?.title}</h1>
       <p className="text-gray-600 mt-2">{project?.description}</p>
-
       <div className="mt-4">
         <span className="font-semibold">Owner:</span> {project?.owner?.name}
       </div>
@@ -92,7 +92,10 @@ const ProjectDetail = () => {
         <span className="font-semibold">Technologies:</span>{' '}
         {project?.technologies?.join(', ')}
       </div>
-
+      Files
+      {project.files?.map((file) => <p>{file}</p>)}
+      Tasks
+      {project.tasks?.map((task) => <p>{task}</p>)}
       <div className="mt-6 flex space-x-4">
         <Link href="/projects">
           <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
