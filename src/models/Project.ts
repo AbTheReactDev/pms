@@ -11,6 +11,7 @@ interface ProjectDocument extends mongoose.Document {
   technologies: string[] // list of technologies used in the project
   budget: number
   tasks: mongoose.Types.ObjectId[] // reference to an array of Task models (optional, depending on your structure)
+  files: string[]
 }
 
 const projectSchema = new mongoose.Schema<ProjectDocument>(
@@ -60,6 +61,7 @@ const projectSchema = new mongoose.Schema<ProjectDocument>(
         ref: 'Task', // Reference to Task model, if you're tracking tasks in a project (optional)
       },
     ],
+    files: [{ type: String }], // Storing Cloudinary file URLs
   },
   {
     timestamps: true,

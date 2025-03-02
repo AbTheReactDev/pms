@@ -1,7 +1,7 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { uploadToCloudinary } from '@/utils/cloudinary' // Import function
 
 const CreateProject = () => {
   const router = useRouter()
@@ -15,6 +15,7 @@ const CreateProject = () => {
     technologies: '',
     budget: '',
   })
+  const [files, setFiles] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -27,33 +28,55 @@ const CreateProject = () => {
     setFormData({ ...formData, [name]: value })
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles(Array.from(e.target.files))
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const projectData = {
-      ...formData,
-      technologies: formData.technologies.split(',').map((tech) => tech.trim()),
-      budget: parseFloat(formData.budget),
-      appLink: formData.appLink,
-    }
+    try {
+      // Upload files to Cloudinary
+      const uploadedFiles = await Promise.all(
+        files.map((file) =>
+          uploadToCloudinary(
+            file,
+            `projects/${formData.title.replace(/\s+/g, '_')}`
+          )
+        )
+      )
 
-    const res = await fetch('/api/projects', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(projectData),
-    })
+      const projectData = {
+        ...formData,
+        technologies: formData.technologies
+          .split(',')
+          .map((tech) => tech.trim()),
+        budget: parseFloat(formData.budget),
+        appLink: formData.appLink,
+        files: uploadedFiles.filter((url) => url !== null), // Store only successful uploads
+      }
 
-    const data = await res.json()
-    setLoading(false)
+      const res = await fetch('/api/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(projectData),
+      })
 
-    if (!res.ok) {
-      setError(data.message || 'Failed to create project.')
-    } else {
-      router.push('/projects') // Redirect to projects list
+      const data = await res.json()
+      setLoading(false)
+
+      if (!res.ok) {
+        setError(data.message || 'Failed to create project.')
+      } else {
+        router.push('/projects')
+      }
+    } catch (err) {
+      setLoading(false)
+      setError('Something went wrong!')
     }
   }
 
@@ -96,7 +119,6 @@ const CreateProject = () => {
           name="endDate"
           value={formData.endDate}
           onChange={handleChange}
-          placeholder="End Date"
           className="w-full p-2 border rounded"
         />
 
@@ -123,12 +145,11 @@ const CreateProject = () => {
         />
 
         <input
-          type="string"
+          type="text"
           name="appLink"
           value={formData.appLink}
           onChange={handleChange}
           placeholder="Link (Optional)"
-          required
           className="w-full p-2 border rounded"
         />
 
@@ -141,6 +162,17 @@ const CreateProject = () => {
           required
           className="w-full p-2 border rounded"
         />
+
+        {/* File Upload */}
+        <input
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          className="w-full p-2 border rounded"
+        />
+        {files.length > 0 && (
+          <p className="text-sm text-gray-500">{files.length} files selected</p>
+        )}
 
         <button
           type="submit"
