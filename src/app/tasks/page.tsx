@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import dayjs from "dayjs";
 
 interface Task {
   _id: string;
   title: string;
   description: string;
   createdAt: string;  // Add this field
+  status: string;  // Add status field
   project: {
     _id: string;
     title: string;
@@ -82,6 +82,7 @@ const Tasks = () => {
               <th className="p-3 border">Title</th>
               <th className="p-3 border">Date</th>
               <th className="p-3 border">Description</th>
+              <th className="p-3 border">Status</th>
               <th className="p-3 border">Project Name</th>
               <th className="p-3 border text-center">Actions</th>
             </tr>
@@ -95,6 +96,7 @@ const Tasks = () => {
                     {new Date(task?.createdAt).toLocaleString()}
                   </td>
                   <td className="p-3 border capitalize">{task?.description}</td>
+                  <td className="p-3 border capitalize">{task?.status}</td>
                   <td className="p-3 border capitalize">{task?.project?.title}</td>
 
                   <td className="p-3 border text-center flex justify-center gap-2">
@@ -139,13 +141,9 @@ const Tasks = () => {
                 <p className="text-sm">
                   Date: {new Date(task?.createdAt).toLocaleString()}
                 </p>
-                <p className="text-sm">Status: {task?.status}</p>
-                <p className="text-sm">
-                  Start: {dayjs(task?.startDate).format("DD MMM YYYY")}
-                </p>
-                <p className="text-sm">
-                  End: {dayjs(task?.endDate).format("DD MMM YYYY")}
-                </p>
+                <p className="text-sm capitalize">Status: {task?.status}</p>
+                <p className="text-sm capitalize">Description: {task?.description}</p>
+                <p className="text-sm capitalize">Project: {task?.project?.title}</p>
                 <div className="flex justify-between mt-2">
                   <Link href={`/tasks/${task?._id}`}>
                     <button className="text-green-600 hover:underline">

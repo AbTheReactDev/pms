@@ -12,7 +12,8 @@ const CreateTask = () => {
     description: "",
     projectId: "",
     dueDate: "",
-    date: new Date().toISOString().split('T')[0]
+    date: new Date().toISOString().split('T')[0],
+    status: "todo"
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,7 +40,8 @@ const CreateTask = () => {
         description: formData?.description,
         projectId: formData.projectId,
         dueDate: formData.dueDate,
-        date: formData.date
+        date: formData.date,
+        status: formData.status
       }),
     });
 
@@ -125,6 +127,18 @@ const CreateTask = () => {
           required
           className="w-full p-2 border rounded"
         />
+
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          required
+        >
+          <option value="todo">To Do</option>
+          <option value="in progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
 
         <button
           type="submit"
