@@ -62,7 +62,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 
-// Update a task
 export async function PUT(req: NextRequest) {
     try {
         await dbConnect();

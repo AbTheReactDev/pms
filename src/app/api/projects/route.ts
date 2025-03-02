@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/mongoDB";
 
-export async function GET() {
+export async function GET(request: Request) {
     await dbConnect();
     const session = await getServerSession(authOptions);
 
@@ -16,7 +16,7 @@ export async function GET() {
             .populate("owner", "name email")
             .populate({
                 path: "tasks",
-                populate: { path: "assignedTo", select: "name email" } // Populate assignedTo field inside tasks
+                populate: { path: "assignedTo", select: "name email" } 
             });
 
         return NextResponse.json({ success: true, data: projects }, { status: 200 });
