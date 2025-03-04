@@ -13,5 +13,8 @@
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
 }
