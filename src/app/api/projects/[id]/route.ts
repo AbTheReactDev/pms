@@ -10,7 +10,9 @@ export async function GET(
 ) {
   await dbConnect()
   try {
-    const project = await Project.findById(params.id).populate('owner')
+    const project = await Project.findById(params.id)
+      .populate('owner')
+      .populate('tasks')
     if (!project)
       return NextResponse.json(
         { success: false, message: 'Project not found' },
