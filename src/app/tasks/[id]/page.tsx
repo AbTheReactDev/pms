@@ -77,9 +77,9 @@ const TaskDetail = () => {
       <p className="text-gray-600 mt-2">
         Created At : {new Date(task?.createdAt).toLocaleDateString()}
       </p>
-      <p className="text-gray-600 mt-2">
+      {/* <p className="text-gray-600 mt-2">
         Due Date : {new Date(task?.dueDate).toLocaleDateString()}
-      </p>
+      </p> */}
 
       <div className="mt-6 flex space-x-4">
         <Link href="/tasks">
