@@ -1,76 +1,109 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const TaskDetail = () => {
+<<<<<<< HEAD
   const { id } = useParams();
   const router = useRouter();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+=======
+  const { id } = useParams() // Get task ID from URL
+  const router = useRouter()
+  const [task, setTask] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
 
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const res = await fetch(`/api/tasks/${id}`);
-        const data = await res.json();
+        const res = await fetch(`/api/tasks/${id}`)
+        const data = await res.json()
 
         if (!res.ok) {
+<<<<<<< HEAD
           throw new Error(data.message || "Failed to load task.");
         }
         setTask(data);
+=======
+          throw new Error(data.message || 'Failed to load task?.')
+        }
+        setTask(data?.data)
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
       } catch (err: any) {
-        setError(err.message);
+        setError(err.message)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    if (id) fetchTask();
-  }, [id]);
+    if (id) fetchTask()
+  }, [id])
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
+    if (!confirm('Are you sure you want to delete this task?')) return
 
     try {
+<<<<<<< HEAD
       const res = await fetch(`/api/tasks?taskId=${id}`, {
         method: "DELETE",
       });
+=======
+      const res = await fetch(`/api/tasks/${id}`, {
+        method: 'DELETE',
+      })
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.message || "Failed to delete task.");
+        throw new Error(data.message || 'Failed to delete task.')
+      } else {
+        alert('Task deleted successfully')
       }
-
-      router.push("/tasks");
+      router.push('/tasks')
     } catch (err: any) {
-      alert(err.message);
+      alert(err.message)
     }
-  };
+  }
 
+<<<<<<< HEAD
   if (loading) return <p className="text-center mt-5">Loading task details...</p>;
+=======
+  if (loading)
+    return <p className="text-center mt-5">Loading task details...</p>
+  if (error) return <p className="text-center text-red-500 mt-5">{error}</p>
+
+  console.log(task)
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h1 className="text-3xl font-semibold">{task?.title}</h1>
       <p className="text-gray-600 mt-2">{task?.description}</p>
 
+<<<<<<< HEAD
       <div className="mt-4">
         <span className="font-semibold">Project:</span> {task?.project?.title}
       </div>
+=======
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
       <div className="mt-2">
         <span className="font-semibold">Status:</span>
         <span
-          className={`ml-2 px-2 py-1 rounded text-white ${getStatusColor(
+          className={`ml-2 px-2 py-1 rounded text-sm text-white ${getStatusColor(
             task?.status
           )}`}
         >
           {task?.status}
         </span>
       </div>
+<<<<<<< HEAD
       {task?.assignedTo && (
         <div className="mt-2">
           <span className="font-semibold">Assigned To:</span>{" "}
@@ -83,6 +116,15 @@ const TaskDetail = () => {
           {new Date(task?.dueDate).toLocaleDateString()}
         </div>
       )}
+=======
+
+      <p className="text-gray-600 mt-2">
+        Created At : {new Date(task?.createdAt).toLocaleDateString()}
+      </p>
+      <p className="text-gray-600 mt-2">
+        Due Date : {new Date(task?.dueDate).toLocaleDateString()}
+      </p>
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
 
       <div className="mt-6 flex space-x-4">
         <Link href="/tasks">
@@ -103,21 +145,30 @@ const TaskDetail = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
 // Helper function to style status labels
 const getStatusColor = (status: string) => {
   switch (status) {
+<<<<<<< HEAD
     case "in progress":
       return "bg-yellow-500";
     case "completed":
       return "bg-green-500";
     case "todo":
       return "bg-blue-500";
+=======
+    case 'ongoing':
+      return 'bg-yellow-500'
+    case 'completed':
+      return 'bg-green-500'
+    case 'paused':
+      return 'bg-red-500'
+>>>>>>> d75bcd9293ca6db9529c0693c8974eb8790a1f8d
     default:
-      return "bg-gray-500";
+      return 'bg-gray-500'
   }
-};
+}
 
-export default TaskDetail;
+export default TaskDetail

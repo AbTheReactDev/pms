@@ -1,27 +1,27 @@
-"use client";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+'use client'
+import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 const Navbar = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter()
+  const { data: session, status } = useSession()
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleSignOut = () => {
-    signOut();
-  };
+    signOut()
+  }
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/auth/signin");
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
     }
-  }, [status, router]);
+  }, [status, router])
 
   return (
-<header className="bg-white shadow p-4 flex justify-between sticky top-0 z-50">
-<h1 className="text-2xl font-bold text-gray-700">PMS</h1>
+    <header className="bg-white shadow p-4 flex justify-between sticky top-0 z-50">
+      <h1 className="text-2xl font-bold text-gray-700">PMS</h1>
 
       <div className="flex gap-2 items-center">
         <h1 className="font-bold">
@@ -57,7 +57,7 @@ const Navbar = () => {
         </div>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

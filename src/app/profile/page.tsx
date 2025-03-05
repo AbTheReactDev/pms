@@ -1,77 +1,77 @@
-"use client";
+'use client'
 
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 export default function Profile() {
-  const { data: session, update } = useSession();
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: session, update } = useSession()
+  const [isLoading, setIsLoading] = useState(false)
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    gender: "",
-    contactNo: "",
-    profilePicture: "",
-  });
+    firstName: '',
+    lastName: '',
+    email: '',
+    gender: '',
+    contactNo: '',
+    profilePicture: '',
+  })
 
   useEffect(() => {
     if (session?.user) {
       setFormData({
-        firstName: session.user.firstName || "",
-        lastName: session.user.lastName || "",
-        email: session.user.email || "",
-        gender: session.user.gender || "",
-        contactNo: session.user.contactNo || "",
-        profilePicture: session.user.profilePicture || "",
-      });
+        firstName: session.user.firstName || '',
+        lastName: session.user.lastName || '',
+        email: session.user.email || '',
+        gender: session.user.gender || '',
+        contactNo: session.user.contactNo || '',
+        profilePicture: session.user.profilePicture || '',
+      })
     }
-  }, [session?.user]);
+  }, [session?.user])
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = event.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
+      const file = event.target.files[0]
+      const reader = new FileReader()
       reader.onloadend = () => {
         setFormData((prev) => ({
           ...prev,
           profilePicture: reader.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
+        }))
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
-    event.preventDefault();
-    const response = await fetch("/api/user/profile", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
+    setIsLoading(true)
+    event.preventDefault()
+    const response = await fetch('/api/user/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
-    });
+    })
 
     if (response.ok) {
-      const data = await response.json();
+      const data = await response.json()
 
       if (data.user) {
-        update();
+        update()
       }
     } else {
-      const error = await response.json();
-      console.log(error);
+      const error = await response.json()
+      console.log(error)
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false)
+  }
 
   return (
     <div className="flex items-center justify-center h-[80vh]">
@@ -188,11 +188,11 @@ export default function Profile() {
               type="submit"
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
             >
-              {isLoading ? "Saving..." : "Save Changes"}
+              {isLoading ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }

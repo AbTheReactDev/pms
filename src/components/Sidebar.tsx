@@ -1,26 +1,26 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import Link from 'next/link'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 
 type Props = {
-  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
-  isSidebarOpen: boolean;
-};
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>
+  isSidebarOpen: boolean
+}
 
 const Sidebar = ({ setIsSidebarOpen, isSidebarOpen }: Props) => {
   const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
+    setIsSidebarOpen((prev) => !prev)
+  }
   return (
     <aside
       className={`bg-blue-600 text-white transition-all duration-300 fixed left-0 top-0 bottom-0 h-screen overflow-hidden ${
-        isSidebarOpen ? "w-64" : "w-16"
+        isSidebarOpen ? 'w-64' : 'w-16'
       }`}
     >
       <div
         className={`p-4 flex items-center  ${
-          !isSidebarOpen ? "justify-center" : "justify-start"
+          !isSidebarOpen ? 'justify-center' : 'justify-start'
         }`}
       >
         <button
@@ -46,14 +46,16 @@ const Sidebar = ({ setIsSidebarOpen, isSidebarOpen }: Props) => {
       </div>
       <nav
         className={`flex flex-col mt-4  ${
-          !isSidebarOpen ? "items-center" : ""
+          !isSidebarOpen ? 'items-center' : ''
         } `}
       >
         <Link
           href="/projects"
           className="py-2 px-3 rounded hover:bg-blue-500 flex items-center justify-between"
         >
-          <span className={`${isSidebarOpen ? "inline" : "hidden"} ml-2 font-medium`}>
+          <span
+            className={`${isSidebarOpen ? 'inline' : 'hidden'} ml-2 font-medium`}
+          >
             Projects
           </span>
           <svg
@@ -79,7 +81,9 @@ const Sidebar = ({ setIsSidebarOpen, isSidebarOpen }: Props) => {
           href="/tasks"
           className="py-2 px-3 rounded hover:bg-blue-500 flex items-center justify-between"
         >
-          <span className={`${isSidebarOpen ? "inline" : "hidden"} ml-2 font-medium`}>
+          <span
+            className={`${isSidebarOpen ? 'inline' : 'hidden'} ml-2 font-medium`}
+          >
             Tasks
           </span>
           <svg
@@ -98,7 +102,7 @@ const Sidebar = ({ setIsSidebarOpen, isSidebarOpen }: Props) => {
         </Link>
       </nav>
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
