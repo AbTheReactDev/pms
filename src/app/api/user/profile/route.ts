@@ -22,9 +22,24 @@ export async function PUT(req: Request) {
     const { firstName, lastName, contactNo, gender, profilePicture, password } =
       body
 
+    // Validate firstName and lastName
+    if (firstName && !firstName.trim()) {
+      return NextResponse.json(
+        { success: false, message: 'First name cannot be empty' },
+        { status: 400 }
+      )
+    }
+
+    if (lastName && !lastName.trim()) {
+      return NextResponse.json(
+        { success: false, message: 'Last name cannot be empty' },
+        { status: 400 }
+      )
+    }
+
     const updatedData: any = {}
-    if (firstName) updatedData.firstName = firstName
-    if (lastName) updatedData.lastName = lastName
+    if (firstName) updatedData.firstName = firstName.trim()
+    if (lastName) updatedData.lastName = lastName.trim()
     if (contactNo) updatedData.contactNo = contactNo
     if (gender) updatedData.gender = gender
     if (profilePicture) updatedData.profilePicture = profilePicture

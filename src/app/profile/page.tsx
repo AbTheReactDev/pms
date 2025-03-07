@@ -3,10 +3,12 @@
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import React from 'react'
 
 export default function Profile() {
   const { data: session, update } = useSession()
   const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -53,22 +55,41 @@ export default function Profile() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true)
+    setMessage(null)
     event.preventDefault()
-    const response = await fetch('/api/user/profile', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    })
 
-    if (response.ok) {
+    // Validate firstName and lastName
+    if (!formData.firstName.trim()) {
+      setMessage({ type: 'error', text: 'First name is required' })
+      setIsLoading(false)
+      return
+    }
+
+    if (!formData.lastName.trim()) {
+      setMessage({ type: 'error', text: 'Last name is required' })
+      setIsLoading(false)
+      return
+    }
+
+    try {
+      const response = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
       const data = await response.json()
 
-      if (data.user) {
-        update()
+      if (response.ok) {
+        if (data.user) {
+          await update()
+          setMessage({ type: 'success', text: 'Profile updated successfully!' })
+        }
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Failed to update profile' })
       }
-    } else {
-      const error = await response.json()
-      console.log(error)
+    } catch {
+      setMessage({ type: 'error', text: 'An error occurred while updating profile' })
     }
     setIsLoading(false)
   }
@@ -76,6 +97,12 @@ export default function Profile() {
   return (
     <div className="flex items-center justify-center h-[80vh]">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        {message && (
+          <div className={`mb-4 p-4 rounded ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            }`}>
+            {message.text}
+          </div>
+        )}
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
